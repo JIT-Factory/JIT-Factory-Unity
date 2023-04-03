@@ -28,7 +28,7 @@ public class Classification : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other) {
+    /*private void OnTriggerEnter(Collider other) {
         
         if(other.CompareTag("Product1"))
         {
@@ -57,5 +57,5 @@ public class Classification : MonoBehaviour
                 
             }
         }
-    }
+    }*/
 }

@@ -19,7 +19,8 @@ public class Packaging : MonoBehaviour
         v1 = new Vector3(spawn1.transform.position.x,spawn1.transform.position.y,spawn1.transform.position.z);
         v2 = new Vector3(spawn2.transform.position.x,spawn2.transform.position.y,spawn2.transform.position.z);
         v3 = new Vector3(spawn3.transform.position.x,spawn3.transform.position.y,spawn3.transform.position.z);
-    }
+
+        }
 
     // Update is called once per frame
     void Update()
@@ -27,11 +28,11 @@ public class Packaging : MonoBehaviour
         
     }
     
-    private void OnTriggerEnter(Collider other) {
+    /*private void OnTriggerEnter(Collider other) {
         
         if(other.CompareTag("Product1"))
         {
-            if(GameObject.Find("Product1").GetComponent<ProductInformation>().productNumber == 1)
+            if(product1.)
             {
                 product1.transform.position = v1;
                 Debug.Log("取帚取???1");
@@ -40,7 +41,7 @@ public class Packaging : MonoBehaviour
         }
         if(other.CompareTag("Product2"))
         {
-            if(GameObject.Find("Product2").GetComponent<ProductInformation>().productNumber == 2)
+            if(GameObject.Find("Product2").GetComponent<ProductDate>().productNumber == 2)
             {
                 product2.transform.position = v2;
                 Debug.Log("取帚取???2");
@@ -49,12 +50,12 @@ public class Packaging : MonoBehaviour
         }
         if(other.CompareTag("Product3"))
         {
-            if(GameObject.Find("Product3").GetComponent<ProductInformation>().productNumber == 3)
+            if(GameObject.Find("Product3").GetComponent<ProductDate>().productNumber == 3)
             {
                 product3.transform.position = v3;
                 Debug.Log("取帚取???3");
                 
             }
         }
-    }
+    }*/
 }
