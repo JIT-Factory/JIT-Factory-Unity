@@ -28,34 +28,35 @@ public class Classification : MonoBehaviour
         
     }
 
-    /*private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other) {
         
         if(other.CompareTag("Product1"))
         {
-            if(GameObject.Find("Product1").GetComponent<ProductInformation>().productNumber == 1)
+            if(GameObject.Find("Product1").GetComponent<ProData>().productName == "scissors")
             {
-                product1.transform.position = v1;
+                
+                other.transform.position = v1;
                 Debug.Log("¾ø¾îÁü1");
                 
             }
         }
         if(other.CompareTag("Product2"))
         {
-            if(GameObject.Find("Product2").GetComponent<ProductInformation>().productNumber == 2)
+            if(GameObject.Find("Product2").GetComponent<ProData>().productName == "rock")
             {
-                product2.transform.position = v2;
+                other.transform.position = v2;
                 Debug.Log("¾ø¾îÁü2");
                 
             }
         }
         if(other.CompareTag("Product3"))
         {
-            if(GameObject.Find("Product3").GetComponent<ProductInformation>().productNumber == 3)
+            if(GameObject.Find("Product3").GetComponent<ProData>().productName == "furoshiki")
             {
-                product3.transform.position = v3;
+                other.transform.position = v3;
                 Debug.Log("¾ø¾îÁü3");
                 
             }
         }
-    }*/
+    }
 }

@@ -17,6 +17,10 @@ public class ProductCreate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+    }
+    public void Create()
+    {
         Instantiate(Product,vector3,Product.transform.rotation);
     }
 }

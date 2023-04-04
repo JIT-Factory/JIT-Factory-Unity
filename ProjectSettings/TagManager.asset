@@ -8,6 +8,7 @@ TagManager:
   - Product1
   - Product2
   - Product3
+  - Belt
   layers:
   - Default
   - TransparentFX
