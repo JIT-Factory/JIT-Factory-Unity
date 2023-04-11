@@ -32,28 +32,28 @@ public class Packaging : MonoBehaviour
         
         if(other.CompareTag("Product1"))
         {
-            if(GameObject.Find("Product1").GetComponent<ProData>().productName == "scissors")
+            if(other.CompareTag("Product1"))
             {
                 other.transform.position = v1;
-                Debug.Log("??????1");
+
                 
             }
         }
         if(other.CompareTag("Product2"))
         {
-            if(GameObject.Find("Product2").GetComponent<ProData>().productName == "rock")
+            if(other.CompareTag("Product2"))
             {
                 other.transform.position = v2;
-                Debug.Log("??????2");
+                
                 
             }
         }
         if(other.CompareTag("Product3"))
         {
-            if(GameObject.Find("Product3").GetComponent<ProData>().productName == "furoshiki")
+            if(other.CompareTag("Product3"))
             {
                 other.transform.position = v3;
-                Debug.Log("??????3");
+               
                 
             }
         }
