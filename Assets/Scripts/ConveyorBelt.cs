@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ConveyorBelt : MonoBehaviour
 {
-    public bool machineOperation = true;
+    public bool machineOperation;
     float speed = 1.0f;
     Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {
+        machineOperation = false;
         rigidbody = GetComponent<Rigidbody>();
     }
     void FixedUpdate() {
