@@ -17,7 +17,7 @@ public class ConveyorBelt : MonoBehaviour
         if(machineOperation == true)
         {
             Vector3 Position = rigidbody.position;
-            rigidbody.position += Vector3.left * speed *Time.deltaTime;
+            rigidbody.position += Vector3.right * speed *Time.deltaTime;
             rigidbody.MovePosition(Position);
         }
     }

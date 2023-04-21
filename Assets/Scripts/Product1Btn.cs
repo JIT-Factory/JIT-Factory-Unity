@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net.Http;
 using System.Threading.Tasks;
 using SimpleJSON;
+using System.Text;
 
 public class Product1Btn : MonoBehaviour
 {
@@ -39,16 +40,14 @@ public class Product1Btn : MonoBehaviour
         }
 
         // 单捞磐 积己
-        var data = new Dictionary<string, string>
-        {
-            { "productName", "ProductA" },
-            { "status", _status }
-        };
+        var json = JSON.Parse("{}");
+        json["productName"] = "ProductA";
+        json["status"] = _status;
 
         // HTTP POST 夸没
         using (var client = new HttpClient())
         {
-            var content = new FormUrlEncodedContent(data);
+            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(_url, content);
 
             if (response.IsSuccessStatusCode)
