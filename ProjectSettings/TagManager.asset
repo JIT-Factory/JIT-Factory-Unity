@@ -3,12 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Product
-  - Product1
-  - Product2
-  - Product3
-  - Belt
+  tags: []
   layers:
   - Default
   - TransparentFX
