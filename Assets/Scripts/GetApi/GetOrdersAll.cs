@@ -24,6 +24,7 @@ public class GetOrdersAll : MonoBehaviour
     {
         while (true)
         {
+            Debug.Log(isProcessingOrders);
             if (!isProcessingOrders) // 처리 중인 주문이 없을 때만 GET을 받습니다.
             {
                 using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/orders/all"))
@@ -51,9 +52,9 @@ public class GetOrdersAll : MonoBehaviour
                         foreach (Order newOrder in newOrders)
                         {
                             bool found = false;
-                            foreach (Order order in orders)
+                           foreach (Order order in orders)
                             {
-                                if (order.count == newOrder.count)
+                                if (order.productName == "ProductA" && newOrder.productName == "ProductA" && order.count != newOrder.count)
                                 {
                                     found = true;
                                     break;
@@ -87,10 +88,13 @@ public class GetOrdersAll : MonoBehaviour
 
         foreach (Order order in orders)
         {
-            for (int i = 0; i < order.count; i++)
+            if (order.productName == "ProductA")
             {
+                for (int i = 0; i < order.count; i++)
+                {
                 Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0,180,0));
                 yield return new WaitForSeconds(5.0f); // 대기 시간을 10초로 설정합니다.
+                }
             }
         }
 
