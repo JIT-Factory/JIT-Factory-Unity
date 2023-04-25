@@ -7,7 +7,9 @@ public class ApiOrdersAll : MonoBehaviour
 {
     private bool _shouldContinuouslyReceive = true;
     private string _previousJsonResponse = "";
-
+    GameObject conveyorBelt;
+    public GameObject volvoCar;
+    public GameObject spawn;
     async void Start()
     {
         while (_shouldContinuouslyReceive)
@@ -17,6 +19,7 @@ public class ApiOrdersAll : MonoBehaviour
             Debug.Log("Response received");
 
             if (response.IsSuccessStatusCode)
+            
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 Debug.Log(jsonResponse);
@@ -31,17 +34,21 @@ public class ApiOrdersAll : MonoBehaviour
                     {
                         Order order = JsonUtility.FromJson<Order>(jsonNode.ToString());
 
-                        if (order.productName == "ProductA")
+                        if (order.productName == "Car")
                         {
-                            Product1Btn product1Btn = GameObject.Find("Product1").GetComponent<Product1Btn>();
-
+                            conveyorBelt  = GameObject.Find("ConveyorManagement");
+                            
                             if (order.status == "run")
                             {
-                                product1Btn.SetProButton1(true);
+                                conveyorBelt.GetComponent<PlayMachine>().MachineOperationConTrue();
+                                Debug.Log("get받아서 True");
+                                Instantiate(volvoCar,spawn.transform.position , Quaternion.identity);
+                                
                             }
                             else
                             {
-                                product1Btn.SetProButton1(false);
+                               conveyorBelt.GetComponent<PlayMachine>().MachineOperationConFalse();
+                                Debug.Log("get받아서 false");
                             }
                         }
                     }

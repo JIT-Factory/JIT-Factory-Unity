@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ConveyorBelt : MonoBehaviour
 {
     public bool machineOperation;
     float speed = 1.0f;
+
+
     Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
@@ -20,5 +23,10 @@ public class ConveyorBelt : MonoBehaviour
             rigidbody.position += Vector3.right * speed *Time.deltaTime;
             rigidbody.MovePosition(Position);
         }
+    }
+
+    public void GetmachineOper()
+    {
+        machineOperation = !machineOperation;
     }
 }

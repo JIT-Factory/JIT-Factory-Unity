@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Body
+  - Door
+  - Wheel
+  - Interior
+  - 1stProcess
+  - 2stProcess
+  - 3stProcess
   layers:
   - Default
   - TransparentFX
