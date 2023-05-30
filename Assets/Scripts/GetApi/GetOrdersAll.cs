@@ -4,16 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using OrderData;
 
-public class GetOrdersAll : MonoBehaviour
+public class GetOrdersAll  : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private GameObject orderObjectPrefab;
-    [SerializeField] 
+    [SerializeField]
     private GameObject spawn;
+    public AudioClip audioClip;
 
     private List<Order> orders = new List<Order>();
 
     private bool isProcessingOrders = false; // 처리 중인 주문이 있는지 여부를 나타냅니다.
+
+    [SerializeField]
+    private string factoryName; // 검색할 공장 이름
+     [SerializeField]
+    private string productName; // 검색할 제품 이름
 
     void Start()
     {
@@ -24,17 +30,17 @@ public class GetOrdersAll : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(isProcessingOrders);
+            //Debug.Log(isProcessingOrders);
             if (!isProcessingOrders) // 처리 중인 주문이 없을 때만 GET을 받습니다.
             {
-                using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/orders/all"))
+                using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/orders/name/" + factoryName))
                 {
                     yield return www.SendWebRequest();
 
                     if (www.result == UnityWebRequest.Result.Success)
                     {
                         string json = www.downloadHandler.text;
-                        Debug.Log(json);
+                        //Debug.Log(json);
 
                         List<Order> newOrders = new List<Order>();
                         if (!string.IsNullOrEmpty(json))
@@ -52,9 +58,9 @@ public class GetOrdersAll : MonoBehaviour
                         foreach (Order newOrder in newOrders)
                         {
                             bool found = false;
-                           foreach (Order order in orders)
+                            foreach (Order order in orders)
                             {
-                                if (order.productName == "ProductA" && newOrder.productName == "ProductA" && order.count != newOrder.count)
+                                if (order.productName == newOrder.productName && order.count != newOrder.count)
                                 {
                                     found = true;
                                     break;
@@ -88,12 +94,13 @@ public class GetOrdersAll : MonoBehaviour
 
         foreach (Order order in orders)
         {
-            if (order.productName == "ProductA")
+            if (order.factoryName == factoryName && order.productName == productName)
             {
                 for (int i = 0; i < order.count; i++)
                 {
-                Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0,180,0));
-                yield return new WaitForSeconds(5.0f); // 대기 시간을 10초로 설정합니다.
+                    SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+                    Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0, 180, 0));
+                    yield return new WaitForSeconds(5.0f); // 대기 시간을 10초로 설정합니다.
                 }
             }
         }

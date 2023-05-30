@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class ProData : MonoBehaviour
 {
-    public string productName;
-    public string status;
-    public int sales;
-    public string reason;
+    public string factoryName = "CarFactory";
+    public string productName = "ProductA";
+    public string status = "success";
+    public int sales = 10056;
+    public string reason = "-";
 
     // 제품 정보를 반환하는 메소드
     public ProductData GetProductData()

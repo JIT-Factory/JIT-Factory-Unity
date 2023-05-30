@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConveyorBeltBack : MonoBehaviour
 {
     public bool machineOperation;
+    public AudioClip audioClip;
     float speed = 1.0f;
     Rigidbody rigidbody;
     // Start is called before the first frame update
@@ -20,5 +21,17 @@ public class ConveyorBeltBack : MonoBehaviour
             rigidbody.position += Vector3.back * speed *Time.deltaTime;
             rigidbody.MovePosition(Position);
         }
+    }
+     void Update()
+    {
+        if (machineOperation && !SoundManager.Instance.IsPlaying(audioClip))
+        {
+            SoundManager.Instance.PlaySound(audioClip); // 家府 犁积
+        }
+        else if (!machineOperation)
+        {
+            SoundManager.Instance.StopSound(audioClip); // 家府 吝瘤
+        }
+       
     }
 }

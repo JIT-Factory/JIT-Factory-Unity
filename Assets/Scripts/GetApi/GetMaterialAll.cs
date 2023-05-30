@@ -3,149 +3,130 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MaterialData;
+
 public class GetMaterialAll : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private GameObject wheelPrefab;
-    [SerializeField] 
+    [SerializeField]
     private GameObject wheelspawn;
-     [SerializeField] 
+    [SerializeField]
     private GameObject doorPrefab;
-    [SerializeField] 
+    [SerializeField]
     private GameObject doorspawn;
 
-    private List<CarMaterial> orders = new List<CarMaterial>();
+    [SerializeField]
+    private string factoryName; // 검색할 공장 이름
+    public AudioClip audioClip;
 
-private bool isProcessingOrders = false; // 처리 중인 주문이 있는지 여부를 나타냅니다.
+    private List<CarMaterial> materials = new List<CarMaterial>();
+    private bool isProcessingOrders = false; // 처리 중인 주문이 있는지 여부를 나타냅니다.
 
-void Start()
-{
-    StartCoroutine(WaitForGet());
-}
+    [SerializeField]
+    private int maxCreationCount = 3; // 최대 생성 수량 설정
 
-IEnumerator WaitForGet()
-{
-    while (true)
+    void Start()
     {
-        Debug.Log(isProcessingOrders);
-        if (!isProcessingOrders) // 처리 중인 주문이 없을 때만 GET을 받습니다.
-        {
-            using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/material/all"))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-                    string json = www.downloadHandler.text;
-                    Debug.Log(json);
-
-                    List<CarMaterial> newOrders = new List<CarMaterial>();
-                    if (!string.IsNullOrEmpty(json))
-                    {
-                        // JSON 배열을 파싱합니다.
-                        MaterialList orderList = JsonUtility.FromJson<MaterialList>("{\"material\":" + json + "}");
-                        if (orderList != null && orderList.orders != null)
-                        {
-                            newOrders = orderList.orders;
-                        }
-                    }
-
-                    Debug.Log("왔어?");
-                    // 이전에 처리한 주문 목록과 새로운 주문 목록을 비교합니다.
-                    List<CarMaterial> addedOrders = new List<CarMaterial>();
-
-                    foreach (CarMaterial newOrder in newOrders)
-                    {
-                        Debug.Log("싯팔");
-                    }
-
-
-
-
-                    foreach (CarMaterial newOrder in newOrders)
-                    {
-                        // bool found = false;
-                        // Debug.Log("왔냐?1");
-                        // foreach (CarMaterial order in orders)
-                        // {
-                        //         if (order.materialName == "CarDoors" && newOrder.materialName == "CarDoors" && order.stock != newOrder.stock)
-                        //         {
-                        //             found = true;
-                        //             break;
-                        //         }
-                        // }
-                        // if (!found)
-                        // {
-                        //         addedOrders.Add(newOrder);
-                        // }
-                        bool found = false;
-                        Debug.Log("왔나?1");
-                        foreach (CarMaterial order in orders)
-                        {
-                            Debug.Log("왔나?2");
-                            if (order.materialName == "CarDoors" && newOrder.materialName == "CarDoors" && order.stock != newOrder.stock)
-                            {
-                                found = true;
-                                break;
-                            }
-                            else if (order.materialName == "CarWheels" && newOrder.materialName == "CarWheels" && order.stock != newOrder.stock)
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                            addedOrders.Add(newOrder);
-                        }
-                    }
-
-                    // 새로운 주문 항목에 대한 처리를 시작합니다.
-                    if (addedOrders.Count > 0)
-                    {
-                        StartCoroutine(GetOrders(addedOrders));
-                    }
-
-                    // 주문 목록을 업데이트합니다.
-                    orders = newOrders;
-                }
-            }
-        }
-
-        yield return new WaitForSeconds(1.0f);
-        Debug.Log("왔을까");
+        StartCoroutine(WaitForGet());
     }
-}
-  IEnumerator GetOrders(List<CarMaterial> orders)
-{
-    isProcessingOrders = true; // 처리 중인 주문이 있음을 나타냅니다.
-    Debug.Log("왔나?3");
-    foreach (CarMaterial order in orders)
+
+    IEnumerator WaitForGet()
     {
-        if (order.materialName == "CarDoors")
+        while (true)
         {
-            for (int i = 0; i < order.stock; i++)
+            if (!isProcessingOrders)
             {
-                Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0,180,0));
-                yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
+                using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/material/name/" + factoryName))
+                {
+                    yield return www.SendWebRequest();
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        string json = www.downloadHandler.text;
+                        Debug.Log(json);
+
+                        List<CarMaterial> newMaterials = new List<CarMaterial>();
+                        if (!string.IsNullOrEmpty(json))
+                        {
+                            MaterialList materialList = JsonUtility.FromJson<MaterialList>("{\"materials\":" + json + "}");
+                            if (materialList != null && materialList.materials != null)
+                            {
+                                newMaterials = materialList.materials;
+                            }
+                        }
+
+                        List<CarMaterial> addedMaterials = new List<CarMaterial>();
+                        foreach (CarMaterial newMaterial in newMaterials)
+                        {
+                            bool found = false;
+                            foreach (CarMaterial material in materials)
+                            {
+                                if (material.materialName == newMaterial.materialName && material.stock != newMaterial.stock)
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found)
+                            {
+                                addedMaterials.Add(newMaterial);
+                            }
+                        }
+
+                        if (addedMaterials.Count > 0)
+                        {
+                            StartCoroutine(GetMaterials(addedMaterials));
+                        }
+
+                        materials = newMaterials;
+                    }
+                }
             }
+
+            yield return new WaitForSeconds(1.0f);
         }
-        else if (order.materialName == "CarWheels")
+    }
+
+    IEnumerator GetMaterials(List<CarMaterial> materials)
+    {
+        isProcessingOrders = true;
+
+        foreach (CarMaterial material in materials)
         {
-            for (int i = 0; i < order.stock; i++)
+            if (material.factoryName == factoryName)
             {
-                Instantiate(wheelPrefab, wheelspawn.transform.position, Quaternion.identity);
-                yield return new WaitForSeconds(5.0f); //
+                if (material.materialName == "CarDoors")
+                {
+                    maxCreationCount = material.stock;
+                    
+                    for (int i = 0; i < Mathf.Min(material.stock, maxCreationCount); i++) // 최대 생성 수량을 제한
+                    {
+                        SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+                        Debug.Log("문 생성");
+                        Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
+                        yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
+                    }
+                }
+                else if (material.materialName == "CarWheels")
+                {
+                    maxCreationCount = material.stock;
+                    
+                    for (int i = 0; i < Mathf.Min(material.stock, maxCreationCount); i++) // 최대 생성 수량을 제한
+                    {
+                        SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+                        Debug.Log("바퀴 생성");
+                        Instantiate(wheelPrefab, wheelspawn.transform.position, Quaternion.identity);
+                        yield return new WaitForSeconds(5.0f);
+                    }
                 }
             }
         }
 
-        isProcessingOrders = false; // 처리 중인 주문이 없음을 나타냅니다.
+        isProcessingOrders = false;
     }
 }
 
 [System.Serializable]
 public class MaterialList
 {
-    public List<CarMaterial> orders;
+    public List<CarMaterial> materials;
 }

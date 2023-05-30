@@ -2,29 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using UnityEngine.Networking;
+
 public class PostProductData : MonoBehaviour
 {
-void OnTriggerEnter(Collider other) {
+    private ProData proData;
+    public AudioClip audioClip;
+    void OnTriggerEnter(Collider other)
+    {
+        SoundManager.Instance.PlaySound(audioClip); // 소리 재생
         Destroy(other.gameObject);
         StartCoroutine(PostData());
     }
 
-    IEnumerator PostData() {
-        // 요청 본문 생성
-        string json = "{\"productName\":\"VolvoCar\",\"status\":\"success\",\"sales\":1000000,\"reason\":\"-\"}";
-        byte[] data = Encoding.UTF8.GetBytes(json);
+    IEnumerator PostData()
+    {
+        // ProductData 인스턴스 생성 및 값 설정
+        proData = new ProData();
 
-        // HTTP 요청 메시지 생성
         string url = "http://localhost:8080/api/product/add";
-        WWW www = new WWW(url, data, new Dictionary<string, string>() {
-            { "Content-Type", "application/json" }
-        });
+        // JSON으로 직렬화
+        string jsonBody = JsonUtility.ToJson(proData);
+        // string jsonBody = 
+        // "{\"factoryName\":\"CarFactory\",\"productName\":\"ProductA\",\"status\":\"success\",\"sales\":100,\"reason\":\"-\"}";
 
-        yield return www; // 서버로부터의 응답 대기
-        if (www.error != null) {
-            Debug.Log("Error: " + www.error);
-        } else {
-            Debug.Log("Response: " + www.text);
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Product add request sent successfully.");
+        }
+        else
+        {
+            Debug.Log("Failed to send product add request. Error: " + request.error);
         }
     }
 }

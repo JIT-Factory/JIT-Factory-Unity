@@ -6,6 +6,12 @@ using OrderData;
 
 public class PostOrdersNew : MonoBehaviour
 {
+    [SerializeField]
+    private string factoryName;
+    [SerializeField]
+    private string productName;
+
+
     private void OnTriggerEnter(Collider other) {
          StartCoroutine(PostNewOrder());
     }
@@ -15,7 +21,8 @@ public class PostOrdersNew : MonoBehaviour
     {
         Order order = new Order
         {
-            productName = "ProductA",
+            factoryName = factoryName,
+            productName = productName,
             count = -1
         };
         string json = JsonUtility.ToJson(order);
@@ -38,5 +45,7 @@ public class PostOrdersNew : MonoBehaviour
                 Debug.Log("POST failed!");
             }
         }
+        
     }
+    
 }
