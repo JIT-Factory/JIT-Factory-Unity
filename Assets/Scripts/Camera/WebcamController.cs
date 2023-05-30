@@ -2,34 +2,17 @@ using UnityEngine;
 
 public class WebcamController : MonoBehaviour
 {
-    public WebCamTexture webcamTexture;
-     public Camera[] cameras;
-    private int currentCameraIndex = 0;
+    public Camera[] cameras;
+    private int currentCameraIndex;
 
     private void Start()
     {
-        // 모든 카메라를 끄고, 첫 번째 카메라를 켭니다.
-        for (int i = 0; i < cameras.Length; i++)
-        {
-            cameras[i].gameObject.SetActive(false);
-        }
-        cameras[currentCameraIndex].gameObject.SetActive(true);
-
-        // 사용 가능한 웹캠 장치 목록을 가져옵니다.
-        WebCamDevice[] devices = WebCamTexture.devices;
-
-        // 첫 번째 웹캠을 사용합니다.
-        if (devices.Length > 0)
-        {
-            cameras[currentCameraIndex].targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-            webcamTexture = new WebCamTexture(devices[0].name);
-            webcamTexture.Play();
-        }
+        currentCameraIndex = 0;
+        SetActiveCamera(currentCameraIndex);
     }
 
     private void Update()
     {
-        // 스페이스바를 누르면 카메라를 변경합니다.
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SwitchCamera();
@@ -38,18 +21,24 @@ public class WebcamController : MonoBehaviour
 
     private void SwitchCamera()
     {
-        // 현재 카메라를 끄고, 다음 카메라를 켭니다.
-        cameras[currentCameraIndex].gameObject.SetActive(false);
-        currentCameraIndex++;
-        if (currentCameraIndex >= cameras.Length)
-        {
-            currentCameraIndex = 0;
-        }
-        cameras[currentCameraIndex].gameObject.SetActive(true);
+        // 현재 카메라를 비활성화
+        cameras[currentCameraIndex].enabled = false;
+        cameras[currentCameraIndex].GetComponent<AudioListener>().enabled = false;
 
-        // 현재 카메라의 targetTexture를 변경하여, 해당 카메라가 보내는 화면을 다른 객체로 렌더링합니다.
-        cameras[currentCameraIndex].targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        Material material = GetComponent<Renderer>().material;
-        material.mainTexture = cameras[currentCameraIndex].targetTexture;
+        // 다음 카메라 인덱스로 전환
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.Length;
+
+        // 새로운 카메라를 활성화
+        SetActiveCamera(currentCameraIndex);
+    }
+
+    private void SetActiveCamera(int index)
+    {
+        cameras[index].enabled = true;
+        cameras[index].GetComponent<AudioListener>().enabled = true;
+
+        // 카메라가 현재 위치를 볼 수 있도록 설정
+        Camera.main.transform.position = cameras[index].transform.position;
+        Camera.main.transform.rotation = cameras[index].transform.rotation;
     }
 }

@@ -31,40 +31,51 @@ public class SoundManager : MonoBehaviour
         audioSources = GetComponentsInChildren<AudioSource>();
     }
 
-    public void PlaySound(AudioClip clip)
+    private void OnDestroy()
     {
-        foreach (AudioSource audioSource in audioSources)
+        if (instance == this)
         {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.clip = clip;
-                audioSource.Play();
-                break;
-            }
+            instance = null;
         }
     }
 
-    public void StopSound(AudioClip clip)
+public void PlaySound(AudioClip clip)
+{
+    foreach (AudioSource audioSource in audioSources)
     {
-        foreach (AudioSource audioSource in audioSources)
+        if (!audioSource.isPlaying)
         {
-            if (audioSource.clip == clip)
-            {
-                audioSource.Stop();
-                break;
-            }
+            audioSource.clip = clip;
+            audioSource.Play();
+            Resources.UnloadUnusedAssets();
+            break;
         }
     }
+}
 
-    public bool IsPlaying(AudioClip clip)
+public void StopSound(AudioClip clip)
+{
+    foreach (AudioSource audioSource in audioSources)
     {
-        foreach (AudioSource audioSource in audioSources)
+        if (audioSource.clip == clip)
         {
-            if (audioSource.clip == clip && audioSource.isPlaying)
-            {
-                return true;
-            }
+            audioSource.Stop();
+            Resources.UnloadUnusedAssets();
+            break;
         }
-        return false;
     }
+}
+
+public bool IsPlaying(AudioClip clip)
+{
+    foreach (AudioSource audioSource in audioSources)
+    {
+        if (audioSource.clip == clip && audioSource.isPlaying)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 }

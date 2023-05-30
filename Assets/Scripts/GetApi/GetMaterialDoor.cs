@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MaterialData;
 
-public class GetMaterialAll : MonoBehaviour
+public class GetMaterialDoor : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject wheelPrefab;
-    [SerializeField]
-    private GameObject wheelspawn;
     [SerializeField]
     private GameObject doorPrefab;
     [SerializeField]
@@ -24,7 +20,6 @@ public class GetMaterialAll : MonoBehaviour
 
     
     public GameObject particlePrefab;
-    public GameObject particleWheelSpawn;
     public GameObject particleDoorSpawn;
     public float particleDuration = 2.0f;
 
@@ -39,6 +34,8 @@ public class GetMaterialAll : MonoBehaviour
         {
             if (!isProcessingOrders)
             {
+                
+                
                 using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/material/name/" + factoryName))
                 {
                     yield return www.SendWebRequest();
@@ -50,7 +47,7 @@ public class GetMaterialAll : MonoBehaviour
                         List<CarMaterial> newMaterials = new List<CarMaterial>();
                         if (!string.IsNullOrEmpty(json))
                         {
-                            MaterialList materialList = JsonUtility.FromJson<MaterialList>("{\"materials\":" + json + "}");
+                            MaterialLists materialList = JsonUtility.FromJson<MaterialLists>("{\"materials\":" + json + "}");
                             if (materialList != null && materialList.materials != null)
                             {
                                 newMaterials = materialList.materials;
@@ -97,55 +94,39 @@ public class GetMaterialAll : MonoBehaviour
         {
             if (material.factoryName == factoryName)
             {
-                if (material.materialName == "CarWheels")
+                
+                if (material.materialName == "CarDoors")
                 {
+                    
+                    
                     for (int i = 0; i < material.stock; i++) // 최대 생성 수량을 제한
                     {
                         Debug.Log("소리뿅");
                         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
-                        StartCoroutine(CreateWheelParticle());
-                        Debug.Log("바퀴 생성");
-                        Instantiate(wheelPrefab, wheelspawn.transform.position, Quaternion.identity);
-                        yield return new WaitForSeconds(5.0f);
+                        StartCoroutine(CreateDoorParticle());
+                        Debug.Log("문 생성");
+                        Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
+                        yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
                     }
                 }
-                // if (material.materialName == "CarDoors")
-                // {
-                    
-                    
-                //     for (int i = 0; i < material.stock; i++) // 최대 생성 수량을 제한
-                //     {
-                //         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
-                //         StartCoroutine(CreateDoorParticle());
-                //         Debug.Log("문 생성");
-                //         Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
-                //         yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
-                //     }
-                // }
                 
             }
         }
 
         isProcessingOrders = false;
     }
-    // IEnumerator CreateDoorParticle()
-    // {
-    //     Vector3 particlePosition = new Vector3(particleDoorSpawn.transform.position.x, particleDoorSpawn.transform.position.y, particleDoorSpawn.transform.position.z - 2f);
-    //     GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 180, 0));
-    //     yield return new WaitForSeconds(particleDuration);
-    //     Destroy(particle);
-    // }
-    IEnumerator CreateWheelParticle()
+    IEnumerator CreateDoorParticle()
     {
-        Vector3 particlePosition = new Vector3(particleWheelSpawn.transform.position.x, particleWheelSpawn.transform.position.y, particleWheelSpawn.transform.position.z - 2f);
+        Vector3 particlePosition = new Vector3(particleDoorSpawn.transform.position.x, particleDoorSpawn.transform.position.y, particleDoorSpawn.transform.position.z - 2f);
         GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 180, 0));
         yield return new WaitForSeconds(particleDuration);
         Destroy(particle);
     }
+
 }
 
 [System.Serializable]
-public class MaterialList
+public class MaterialLists
 {
     public List<CarMaterial> materials;
 }

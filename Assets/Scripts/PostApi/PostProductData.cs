@@ -6,28 +6,26 @@ using UnityEngine.Networking;
 
 public class PostProductData : MonoBehaviour
 {
-    private ProData proData;
+    public ProData proData; // ProData를 ScriptableObject 타입으로 변경
     public AudioClip audioClip;
     public GameObject particlePrefab;
     public float particleDuration = 2.0f;
+    
     void OnTriggerEnter(Collider other)
     {
-        SoundManager.Instance.PlaySound(audioClip); // 소리 재생
-         StartCoroutine(CreateParticle());
+        SoundManager.Instance.PlaySound(audioClip);
+        StartCoroutine(CreateParticle());
         Destroy(other.gameObject);
         StartCoroutine(PostData());
     }
 
     IEnumerator PostData()
     {
-        // ProductData 인스턴스 생성 및 값 설정
-        proData = new ProData();
+        // ScriptableObject.CreateInstance 메서드를 사용하여 ProData 인스턴스 생성
+        proData = ScriptableObject.CreateInstance<ProData>();
 
         string url = "http://localhost:8080/api/product/add";
-        // JSON으로 직렬화
         string jsonBody = JsonUtility.ToJson(proData);
-        // string jsonBody = 
-        // "{\"factoryName\":\"CarFactory\",\"productName\":\"ProductA\",\"status\":\"success\",\"sales\":100,\"reason\":\"-\"}";
 
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
@@ -45,7 +43,9 @@ public class PostProductData : MonoBehaviour
         {
             Debug.Log("Failed to send product add request. Error: " + request.error);
         }
+        request.Dispose();
     }
+
     IEnumerator CreateParticle()
     {
         Vector3 particlePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);

@@ -17,7 +17,7 @@ public class PostOrdersNew : MonoBehaviour
     }
 
 
-    IEnumerator PostNewOrder()
+        IEnumerator PostNewOrder()
     {
         Order order = new Order
         {
@@ -27,25 +27,24 @@ public class PostOrdersNew : MonoBehaviour
         };
         string json = JsonUtility.ToJson(order);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:8080/api/orders/new", "POST"))
+        UnityWebRequest request = UnityWebRequest.Post("http://localhost:8080/api/orders/new", "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-            www.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-            www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            www.SetRequestHeader("Content-Type", "application/json");
-
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("POST success!");
-            }
-            else
-            {
-                Debug.Log("POST failed!");
-            }
+            Debug.Log("POST success!");
         }
-        
+        else
+        {
+            Debug.Log("POST failed!");
+        }
+        request.Dispose();
     }
+
     
 }

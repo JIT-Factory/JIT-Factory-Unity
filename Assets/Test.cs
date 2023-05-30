@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PostFactoryUpdate : MonoBehaviour
+public class Test : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,10 @@ public class PostFactoryUpdate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Áö¿ö!");
+            Resources.UnloadUnusedAssets();
+        }
     }
 }

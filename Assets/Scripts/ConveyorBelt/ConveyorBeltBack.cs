@@ -7,7 +7,7 @@ public class ConveyorBeltBack : MonoBehaviour
     public bool machineOperation;
     public AudioClip audioClip;
     float speed = 1.0f;
-    Rigidbody rigidbody;
+   private new Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {

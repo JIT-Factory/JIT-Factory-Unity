@@ -10,7 +10,7 @@ public class ConveyorBelt : MonoBehaviour
     
     float speed = 1.0f;
 
-    Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +32,7 @@ void FixedUpdate()
 
     void Update()
     {
-       void Update()
-    {
+       
         if (machineOperation && !SoundManager.Instance.IsPlaying(audioClip))
         {
             SoundManager.Instance.PlaySound(audioClip); // Ê«Ý¤ ×à?
@@ -43,7 +42,7 @@ void FixedUpdate()
             SoundManager.Instance.StopSound(audioClip); // Ê«Ý¤ ×ð×»
         }
        
-    }
+    
     }
 
     public void GetmachineOper()

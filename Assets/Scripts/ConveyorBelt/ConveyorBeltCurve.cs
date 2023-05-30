@@ -9,7 +9,7 @@ public class ConveyorBeltCurve : MonoBehaviour
     public float amplitude = 1.0f;
     public float frequency = 1.0f;
 
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
     private Vector3 startPosition;
 
     private void Start() {
