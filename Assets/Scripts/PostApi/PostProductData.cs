@@ -8,9 +8,12 @@ public class PostProductData : MonoBehaviour
 {
     private ProData proData;
     public AudioClip audioClip;
+    public GameObject particlePrefab;
+    public float particleDuration = 2.0f;
     void OnTriggerEnter(Collider other)
     {
         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+         StartCoroutine(CreateParticle());
         Destroy(other.gameObject);
         StartCoroutine(PostData());
     }
@@ -42,5 +45,12 @@ public class PostProductData : MonoBehaviour
         {
             Debug.Log("Failed to send product add request. Error: " + request.error);
         }
+    }
+    IEnumerator CreateParticle()
+    {
+        Vector3 particlePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 90, 0));
+        yield return new WaitForSeconds(particleDuration);
+        Destroy(particle);
     }
 }

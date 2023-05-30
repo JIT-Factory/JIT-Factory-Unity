@@ -24,6 +24,10 @@ public class GetMaterialAll : MonoBehaviour
 
     [SerializeField]
     private int maxCreationCount = 3; // 최대 생성 수량 설정
+    public GameObject particlePrefab;
+    public GameObject particleWheelSpawn;
+    public GameObject particleDoorSpawn;
+    public float particleDuration = 2.0f;
 
     void Start()
     {
@@ -101,6 +105,7 @@ public class GetMaterialAll : MonoBehaviour
                     for (int i = 0; i < Mathf.Min(material.stock, maxCreationCount); i++) // 최대 생성 수량을 제한
                     {
                         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+                        StartCoroutine(CreateDoorParticle());
                         Debug.Log("문 생성");
                         Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
                         yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
@@ -113,6 +118,7 @@ public class GetMaterialAll : MonoBehaviour
                     for (int i = 0; i < Mathf.Min(material.stock, maxCreationCount); i++) // 최대 생성 수량을 제한
                     {
                         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
+                        StartCoroutine(CreateWheelParticle());
                         Debug.Log("바퀴 생성");
                         Instantiate(wheelPrefab, wheelspawn.transform.position, Quaternion.identity);
                         yield return new WaitForSeconds(5.0f);
@@ -122,6 +128,20 @@ public class GetMaterialAll : MonoBehaviour
         }
 
         isProcessingOrders = false;
+    }
+    IEnumerator CreateDoorParticle()
+    {
+        Vector3 particlePosition = new Vector3(particleDoorSpawn.transform.position.x, particleDoorSpawn.transform.position.y, particleDoorSpawn.transform.position.z - 2f);
+        GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 180, 0));
+        yield return new WaitForSeconds(particleDuration);
+        Destroy(particle);
+    }
+    IEnumerator CreateWheelParticle()
+    {
+        Vector3 particlePosition = new Vector3(particleWheelSpawn.transform.position.x, particleWheelSpawn.transform.position.y, particleWheelSpawn.transform.position.z - 2f);
+        GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 180, 0));
+        yield return new WaitForSeconds(particleDuration);
+        Destroy(particle);
     }
 }
 

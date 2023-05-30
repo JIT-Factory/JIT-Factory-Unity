@@ -11,7 +11,6 @@ public class GetOrdersAll  : MonoBehaviour
     [SerializeField]
     private GameObject spawn;
     public AudioClip audioClip;
-
     private List<Order> orders = new List<Order>();
 
     private bool isProcessingOrders = false; // 처리 중인 주문이 있는지 여부를 나타냅니다.
@@ -20,6 +19,10 @@ public class GetOrdersAll  : MonoBehaviour
     private string factoryName; // 검색할 공장 이름
      [SerializeField]
     private string productName; // 검색할 제품 이름
+
+    public GameObject particlePrefab;
+    public GameObject particleSpawn;
+    public float particleDuration = 2.0f;
 
     void Start()
     {
@@ -100,12 +103,19 @@ public class GetOrdersAll  : MonoBehaviour
                 {
                     SoundManager.Instance.PlaySound(audioClip); // 소리 재생
                     Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0, 180, 0));
+                    StartCoroutine(CreateParticle());
                     yield return new WaitForSeconds(5.0f); // 대기 시간을 10초로 설정합니다.
                 }
             }
         }
 
         isProcessingOrders = false; // 처리 중인 주문이 없음을 나타냅니다.
+    }
+    IEnumerator CreateParticle()
+    {
+        GameObject particle = Instantiate(particlePrefab, particleSpawn.transform.position, Quaternion.Euler(0, 90, 0));
+        yield return new WaitForSeconds(particleDuration);
+        Destroy(particle);
     }
 }
 
