@@ -101,7 +101,7 @@ public class GetMaterialDoor : MonoBehaviour
                     
                     for (int i = 0; i < material.stock; i++) // 弥措 积己 荐樊阑 力茄
                     {
-                        Debug.Log("家府恍");
+                        
                         SoundManager.Instance.PlaySound(audioClip); // 家府 犁积
                         StartCoroutine(CreateDoorParticle());
                         Debug.Log("巩 积己");
