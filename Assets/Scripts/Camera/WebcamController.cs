@@ -26,7 +26,7 @@ public class WebcamController : MonoBehaviour
     {
         // 데이터 업데이트 중이 아닌 경우에만 업데이트 요청
         if (!isUpdating)
-        {
+        { 
             StartCoroutine(UpdateCameraData());
         }
     }
@@ -67,22 +67,51 @@ public class WebcamController : MonoBehaviour
             }
         }
     }
-
     void SwitchCamera(long cameraNumber)
+{
+    foreach (Camera camera in cameras)
     {
-        foreach (Camera camera in cameras)
+        // cameraNumber와 일치하는 카메라를 활성화
+        if (camera.name == "Camera" + cameraNumber)
         {
-            // cameraNumber와 일치하는 카메라를 활성화
-            if (camera.name == "Camera" + cameraNumber)
+            camera.gameObject.SetActive(true);
+
+            // 해당 카메라에 연결된 Audio Listener를 활성화
+            AudioListener audioListener = camera.GetComponent<AudioListener>();
+            if (audioListener != null)
             {
-                camera.gameObject.SetActive(true);
+                audioListener.enabled = true;
             }
-            else
+        }
+        else
+        {
+            camera.gameObject.SetActive(false);
+
+            // 다른 카메라들에 연결된 Audio Listener를 비활성화
+            AudioListener audioListener = camera.GetComponent<AudioListener>();
+            if (audioListener != null)
             {
-                camera.gameObject.SetActive(false);
+                audioListener.enabled = false;
             }
         }
     }
+}
+
+    // void SwitchCamera(long cameraNumber)
+    // {
+    //     foreach (Camera camera in cameras)
+    //     {
+    //         // cameraNumber와 일치하는 카메라를 활성화
+    //         if (camera.name == "Camera" + cameraNumber)
+    //         {
+    //             camera.gameObject.SetActive(true);
+    //         }
+    //         else
+    //         {
+    //             camera.gameObject.SetActive(false);
+    //         }
+    //     }
+    // }
 }
 
 [System.Serializable]

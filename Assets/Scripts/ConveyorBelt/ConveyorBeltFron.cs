@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConveyorBeltBack : MonoBehaviour
+public class ConveyorBeltFron : MonoBehaviour
 {
     public bool machineOperation;
     public AudioClip audioClip;
@@ -18,7 +18,7 @@ public class ConveyorBeltBack : MonoBehaviour
         if(machineOperation == true)
         {
             Vector3 Position = rigidbody.position;
-            rigidbody.position += Vector3.back * speed *Time.deltaTime;
+            rigidbody.position += Vector3.forward * speed *Time.deltaTime;
             rigidbody.MovePosition(Position);
         }
     }
@@ -26,12 +26,13 @@ public class ConveyorBeltBack : MonoBehaviour
     {
         // if (machineOperation && !SoundManager.Instance.IsPlaying(audioClip))
         // {
-        //     SoundManager.Instance.PlaySound(audioClip); // ¼Ò¸® Àç»ý
+        //     SoundManager.Instance.PlaySound(audioClip); // Ê«Ý¤ ×à?
         // }
         // else if (!machineOperation)
         // {
-        //     SoundManager.Instance.PauseSound(audioClip); // ¼Ò¸® ÁßÁö
+        //     SoundManager.Instance.StopSound(audioClip); // Ê«Ý¤ ×ð×»
         // }
        
     }
 }
+

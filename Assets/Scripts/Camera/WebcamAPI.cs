@@ -10,7 +10,7 @@ using System.IO;
 public class WebcamAPI : MonoBehaviour
 {
     private Camera mainCamera;
-    private string Path = "./";
+    //private string Path = "./";
     void Start()
     {
         mainCamera = Camera.main;

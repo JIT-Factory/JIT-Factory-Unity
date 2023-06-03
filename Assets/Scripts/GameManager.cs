@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(30f); // 1분마다 호출
+            yield return new WaitForSeconds(10f); // 1분마다 호출
 
             Resources.UnloadUnusedAssets();
         }

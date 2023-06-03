@@ -6,7 +6,7 @@ public class ConveyorBelt : MonoBehaviour
 {
     public bool machineOperation;
     AudioSource audioSource;
-    public AudioClip audioClip;
+    //public AudioClip audioClip;
     
     float speed = 1.0f;
 
@@ -33,14 +33,14 @@ void FixedUpdate()
     void Update()
     {
        
-        if (machineOperation && !SoundManager.Instance.IsPlaying(audioClip))
-        {
-            SoundManager.Instance.PlaySound(audioClip); // Ê«Ý¤ ×à?
-        }
-        else if (!machineOperation)
-        {
-            SoundManager.Instance.StopSound(audioClip); // Ê«Ý¤ ×ð×»
-        }
+        // if (machineOperation && !SoundManager.Instance.IsPlaying(audioClip))
+        // {
+        //     SoundManager.Instance.PlaySound(audioClip); // Ê«Ý¤ ×à?
+        // }
+        // else if (!machineOperation)
+        // {
+        //     SoundManager.Instance.StopSound(audioClip); // Ê«Ý¤ ×ð×»
+        // }
        
     
     }

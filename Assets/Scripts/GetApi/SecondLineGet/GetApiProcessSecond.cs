@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
-public class GetApiProcess : MonoBehaviour
+public class GetApiProcessSecond : MonoBehaviour
 {
     public string baseUrl = "http://localhost:8080/api/process";
     public string factoryName;
@@ -15,7 +15,7 @@ public class GetApiProcess : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        conveyorBelt = GameObject.Find("ConveyorManagement");
+        conveyorBelt = GameObject.Find("ConveyorManagementSecond");
         StartCoroutine(GetProcessData());
         
     }
@@ -42,15 +42,15 @@ public class GetApiProcess : MonoBehaviour
                     ProcessData processData = processArray[0];
                     if (processData.processStatus == "run")
                     {
-                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConTrue();
+                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConTrueSecond();
                         // 기타 코드
-                        Debug.Log("기계 동작 시작");
+                        Debug.Log("두 번째 기계 동작 시작");
                     }
                     else if (processData.processStatus == "stop")
                     {
-                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConFalse();
+                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConFalseSecond();
                         // 기타 코드
-                        Debug.Log("기계 동작 중지");
+                        Debug.Log("두 번째 기계 동작 중지");
                     }
                 }
             }

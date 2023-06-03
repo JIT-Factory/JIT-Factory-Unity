@@ -77,5 +77,17 @@ public bool IsPlaying(AudioClip clip)
     }
     return false;
 }
+public void PauseSound(AudioClip clip)
+{
+    foreach (AudioSource audioSource in audioSources)
+    {
+        if (audioSource.clip == clip && audioSource.isPlaying)
+        {
+            audioSource.Pause();
+            break;
+        }
+    }
+}
+
 
 }
