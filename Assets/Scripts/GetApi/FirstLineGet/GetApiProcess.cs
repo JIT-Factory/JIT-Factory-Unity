@@ -10,12 +10,12 @@ public class GetApiProcess : MonoBehaviour
     public string factoryName;
     public string processName;
     public float updateInterval = 1f; // 업데이트 간격
-    GameObject conveyorBelt;
+    //GameObject conveyorBelt;
 
     // Start is called before the first frame update
     void Start()
     {
-        conveyorBelt = GameObject.Find("ConveyorManagement");
+        //conveyorBelt = GameObject.Find("ConveyorManagement");
         StartCoroutine(GetProcessData());
         
     }
@@ -42,13 +42,13 @@ public class GetApiProcess : MonoBehaviour
                     ProcessData processData = processArray[0];
                     if (processData.processStatus == "run" && processData.processName == "FrontProcess")
                     {
-                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConTrue();
+                        GetComponent<PlayMachine>().MachineOperationConTrue();
                         // 기타 코드
                         Debug.Log("첫 번째 기계 동작 시작");
                     }
                     else if (processData.processStatus == "stop" && processData.processName == "FrontProcess")
                     {
-                        conveyorBelt.GetComponent<PlayMachine>().MachineOperationConFalse();
+                        GetComponent<PlayMachine>().MachineOperationConFalse();
                         // 기타 코드
                         Debug.Log("첫 번째 기계 동작 중지");
                     }

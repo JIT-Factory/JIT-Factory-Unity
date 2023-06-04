@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConveyorBeltBack : MonoBehaviour
 {
     public bool machineOperation;
-    public AudioClip audioClip;
+    //public AudioClip audioClip;
     float speed = 1.0f;
    private new Rigidbody rigidbody;
     // Start is called before the first frame update

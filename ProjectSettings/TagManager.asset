@@ -11,6 +11,12 @@ TagManager:
   - 1stProcess
   - 2stProcess
   - 3stProcess
+  - Beer
+  - PotionBig
+  - WineBottle
+  - WineJug
+  - CardboardBox
+  - WrappedBoxes
   layers:
   - Default
   - TransparentFX
