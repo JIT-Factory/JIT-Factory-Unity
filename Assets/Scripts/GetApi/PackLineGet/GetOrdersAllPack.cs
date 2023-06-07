@@ -23,6 +23,7 @@ public class GetOrdersAllPack  : MonoBehaviour
     public GameObject particleSpawn;
     public float particleDuration = 2.0f;
 
+    public GameObject belt;
     void Start()
     {
         StartCoroutine(WaitForGet());
@@ -33,7 +34,7 @@ public class GetOrdersAllPack  : MonoBehaviour
         while (true)
         {
             //Debug.Log(isProcessingOrders);
-            if (!isProcessingOrders) // 처리 중인 주문이 없을 때만 GET을 받습니다.
+            if (!isProcessingOrders && belt.GetComponent<GetApiProcessPack>().GetStaus()) // 처리 중인 주문이 없을 때만 GET을 받습니다.
             {
                 using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8080/api/orders/name/" + factoryName))
                 {
@@ -102,7 +103,7 @@ public class GetOrdersAllPack  : MonoBehaviour
                 {
                     Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0, 180, 0));
                     StartCoroutine(CreateParticle());
-                    yield return new WaitForSeconds(5.0f); // 대기 시간을 10초로 설정합니다.
+                    yield return new WaitForSeconds(20.0f); // 대기 시간을 10초로 설정합니다.
                 }
             }
         }

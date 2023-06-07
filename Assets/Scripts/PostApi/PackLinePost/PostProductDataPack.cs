@@ -13,36 +13,41 @@ public class PostProductDataPack : MonoBehaviour
     public GameObject particlePrefab;
     public float particleDuration = 2.0f;
 
-    void OnTriggerEnter(Collider other)
-    {
-        StartCoroutine(CreateParticle());
-        Destroy(other.gameObject);
+private void OnCollisionEnter(Collision other) {
+    StartCoroutine(CreateParticle());
+    Destroy(other.gameObject);
 
-        if (other.CompareTag("Beer"))
-        {
-            beerData = ScriptableObject.CreateInstance<BeerData>();
-            StartCoroutine(PostData(beerData));
-        }
-        else if (other.CompareTag("PotionBig"))
-        {
-            potionBigData = ScriptableObject.CreateInstance<PotionBigData>();
-            StartCoroutine(PostData(potionBigData));
-        }
-        else if (other.CompareTag("WineBottle"))
-        {
-            wineBottleData = ScriptableObject.CreateInstance<WineBottleData>();
-            StartCoroutine(PostData(wineBottleData));
-        }
-        else if (other.CompareTag("WineJug"))
-        {
-            wineJugData = ScriptableObject.CreateInstance<WineJugData>();
-            StartCoroutine(PostData(wineJugData));
-        }
-        else
-        {
-            Debug.LogWarning("Unhandled object tag: " + other.tag);
-        }
+    if (other.transform.CompareTag("Wrapped_Boxes_Beer"))
+    {
+        Debug.Log("1");
+        beerData = ScriptableObject.CreateInstance<BeerData>();
+        StartCoroutine(PostData(beerData));
     }
+    else if (other.transform.CompareTag("Wrapped_Boxes_PotionBig"))
+    {
+        potionBigData = ScriptableObject.CreateInstance<PotionBigData>();
+        StartCoroutine(PostData(potionBigData));
+    }
+    else if (other.transform.CompareTag("Wrapped_Boxes_WineBottle"))
+    {
+        wineBottleData = ScriptableObject.CreateInstance<WineBottleData>();
+        StartCoroutine(PostData(wineBottleData));
+    }
+    else if (other.transform.CompareTag("Wrapped_Boxes_WineJug"))
+    {
+        wineJugData = ScriptableObject.CreateInstance<WineJugData>();
+        StartCoroutine(PostData(wineJugData));
+    }
+    else
+    {
+        Debug.LogWarning("Unhandled object tag: " + other.transform.tag);
+    }
+}
+    void OnTriggerEnter(Collider other)
+{
+    
+}
+
 
     IEnumerator PostData(ScriptableObject data)
     {

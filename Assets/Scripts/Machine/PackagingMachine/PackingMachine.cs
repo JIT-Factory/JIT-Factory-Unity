@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PackingMachine : MonoBehaviour
 {
-    public GameObject packPrefab;
+    public List<GameObject> packPrefab;
     public List<GameObject> packSpawn;
 
     public GameObject particlePrefab;
@@ -23,35 +23,37 @@ public class PackingMachine : MonoBehaviour
             
             StartCoroutine(CreateParticle());
             Destroy(other.gameObject);
-            Instantiate(packPrefab, packSpawn[0].transform.position, Quaternion.Euler(0,-90,0));
+            Instantiate(packPrefab[0], packSpawn[0].transform.position, Quaternion.Euler(0,-90,0));
         }
         else if(other.gameObject.CompareTag("PotionBig"))
-        {
-            StartCoroutine(CreateParticle());
-            Destroy(other.gameObject);
-            Instantiate(packPrefab, packSpawn[1].transform.position, Quaternion.Euler(0,-90,0));
-        }
-        else if(other.gameObject.CompareTag("WineBottle"))
         {
             
             StartCoroutine(CreateParticle());
             Destroy(other.gameObject);
-            Instantiate(packPrefab, packSpawn[2].transform.position, Quaternion.Euler(0,-90,0));
+            Instantiate(packPrefab[1], packSpawn[1].transform.position, Quaternion.Euler(0,-90,0));
+        }
+        else if(other.gameObject.CompareTag("WineBottle"))
+        {
+           
+            StartCoroutine(CreateParticle());
+            Destroy(other.gameObject);
+            Instantiate(packPrefab[2], packSpawn[2].transform.position, Quaternion.Euler(0,-90,0));
         }
         else if(other.gameObject.CompareTag("WineJug"))
         {
             
             StartCoroutine(CreateParticle());
             Destroy(other.gameObject);
-            Instantiate(packPrefab, packSpawn[3].transform.position, Quaternion.Euler(0,-90,0));
+            Instantiate(packPrefab[3], packSpawn[3].transform.position, Quaternion.Euler(0,-90,0));
         }
         else{
+            
              Destroy(other.gameObject);
         }
     }
         IEnumerator CreateParticle()
     {
-        Vector3 particlePosition = new Vector3(transform.position.x - 2f, transform.position.y, transform.position.z);
+        Vector3 particlePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         GameObject particle = Instantiate(particlePrefab, particlePosition, Quaternion.Euler(0, 90, 0));
         yield return new WaitForSeconds(particleDuration);
         Destroy(particle);

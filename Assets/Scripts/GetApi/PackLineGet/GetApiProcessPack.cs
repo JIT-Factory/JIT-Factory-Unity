@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 
 public class GetApiProcessPack : MonoBehaviour
 {
-    public string baseUrl = "http://localhost:8080/api/process";
+    public string baseUrl = "http://localhost:8080/api/process/show/factory/process";
     public string factoryName;
     public string processName;
     public float updateInterval = 1f; // 업데이트 간격
     //GameObject conveyorBelt;
-
+    bool staus = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +19,10 @@ public class GetApiProcessPack : MonoBehaviour
         StartCoroutine(GetProcessData());
         
     }
-
+    public bool GetStaus()
+    {
+        return staus;
+    }
     IEnumerator GetProcessData()
     {
         while (true) // 무한 반복
@@ -42,15 +45,17 @@ public class GetApiProcessPack : MonoBehaviour
                     ProcessData processData = processArray[0];
                     if (processData.processStatus == "run")
                     {
+                        staus = true;
                         GetComponent<PackPlayMachine>().MachineOperationConTruePack();
                         // 기타 코드
-                        Debug.Log("두 번째 기계 동작 시작");
+                        Debug.Log("두 번째 공장 동작 시작");
                     }
                     else if (processData.processStatus == "stop")
                     {
+                        staus = false;
                         GetComponent<PackPlayMachine>().MachineOperationConFalsePack();
                         // 기타 코드
-                        Debug.Log("두 번째 기계 동작 중지");
+                        Debug.Log("두 번째 공장 동작 중지");
                     }
                 }
             }
