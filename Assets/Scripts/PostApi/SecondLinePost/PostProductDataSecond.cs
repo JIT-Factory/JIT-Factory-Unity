@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class PostProductDataSecond : MonoBehaviour
 {
-    public ProData proData; // ProData를 ScriptableObject 타입으로 변경
+    public ProData2 proData; // ProData를 ScriptableObject 타입으로 변경
     public AudioClip audioClip;
     public GameObject particlePrefab;
     public float particleDuration = 2.0f;
@@ -22,7 +22,7 @@ public class PostProductDataSecond : MonoBehaviour
     IEnumerator PostData()
     {
         // ScriptableObject.CreateInstance 메서드를 사용하여 ProData 인스턴스 생성
-        proData = ScriptableObject.CreateInstance<ProData>();
+        proData = ScriptableObject.CreateInstance<ProData2>();
 
         string url = "http://localhost:8080/api/product/add";
         string jsonBody = JsonUtility.ToJson(proData);

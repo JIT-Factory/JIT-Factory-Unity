@@ -100,7 +100,7 @@ public class GetOrdersAll : MonoBehaviour
                     SoundManager.Instance.PlaySound(audioClip);
                     Instantiate(orderObjectPrefab, spawn.transform.position, Quaternion.Euler(0, 180, 0));
                     StartCoroutine(CreateParticle());
-                    yield return new WaitForSeconds(20.0f);
+                    yield return new WaitForSeconds(15.0f);
                 }
             }
         }

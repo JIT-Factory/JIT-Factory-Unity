@@ -4,9 +4,9 @@ using UnityEngine;
 public class PotionBigData : ScriptableObject
 {
     public string factoryName = "PackagingFactory";
-    public string productName = "PotionBig";
+    public string productName = "CeramicCup";
     public string status = "success";
-    public int sales = 36000;
+    public int sales = 12000;
     public string reason = "-";
 }
 

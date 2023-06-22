@@ -23,9 +23,12 @@ public class GetMaterialDoor : MonoBehaviour
     public GameObject particleDoorSpawn;
     public float particleDuration = 2.0f;
 
+    int materialCount;
     void Start()
     {
+        materialCount = 0;
         StartCoroutine(WaitForGet());
+        isProcessingOrders = false;
     }
 
     IEnumerator WaitForGet()
@@ -71,7 +74,7 @@ public class GetMaterialDoor : MonoBehaviour
                                 addedMaterials.Add(newMaterial);
                             }
                         }
-
+                        
                         if (addedMaterials.Count > 0)
                         {
                             StartCoroutine(GetMaterials(addedMaterials));
@@ -85,7 +88,10 @@ public class GetMaterialDoor : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
         }
     }
-
+    void Create()
+    {
+        Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
+    }
     IEnumerator GetMaterials(List<CarMaterial> materials)
     {
         isProcessingOrders = true;
@@ -97,16 +103,16 @@ public class GetMaterialDoor : MonoBehaviour
                 
                 if (material.materialName == "CarDoors")
                 {
-                    
-                    
-                    for (int i = 0; i < material.stock; i++) // 최대 생성 수량을 제한
+                    materialCount = material.stock;
+                    Debug.Log(materialCount);
+                    for (int i = 0; i < materialCount; i++) // 최대 생성 수량을 제한
                     {
                         
                         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
-                        StartCoroutine(CreateDoorParticle());
+                        //StartCoroutine(CreateDoorParticle());
                         Debug.Log("문 생성");
                         Instantiate(doorPrefab, doorspawn.transform.position, Quaternion.Euler(0, 180, 0));
-                        yield return new WaitForSeconds(5.0f); // 대기 시간을 5초로 설정합니다.
+                        yield return new WaitForSeconds(1.0f); // 대기 시간을 5초로 설정합니다.
                     }
                 }
                 

@@ -15,14 +15,9 @@ public class PostMaterialsNewSecond : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Wheel"))
+        if (other.CompareTag("3stProcess"))
         {
-            Debug.Log("¹ÙÄû");
             StartCoroutine(PostWheelMaterial());
-        }
-        else if (other.CompareTag("Door"))
-        {
-            Debug.Log("¹®");
             StartCoroutine(PostDoorMaterial());
         }
     }

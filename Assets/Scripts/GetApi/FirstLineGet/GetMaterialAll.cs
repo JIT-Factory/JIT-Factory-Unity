@@ -28,8 +28,10 @@ public class GetMaterialAll : MonoBehaviour
     public GameObject particleDoorSpawn;
     public float particleDuration = 2.0f;
 
+    int materialCount;
     void Start()
     {
+        materialCount = 0;
         StartCoroutine(WaitForGet());
     }
 
@@ -99,14 +101,15 @@ public class GetMaterialAll : MonoBehaviour
             {
                 if (material.materialName == "CarWheels")
                 {
-                    for (int i = 0; i < material.stock; i++) // 최대 생성 수량을 제한
+                    materialCount = material.stock;
+                    for (int i = 0; i < materialCount; i++) // 최대 생성 수량을 제한
                     {
                         Debug.Log("소리뿅");
                         SoundManager.Instance.PlaySound(audioClip); // 소리 재생
-                        StartCoroutine(CreateWheelParticle());
+                        //StartCoroutine(CreateWheelParticle());
                         Debug.Log("바퀴 생성");
                         Instantiate(wheelPrefab, wheelspawn.transform.position, Quaternion.identity);
-                        yield return new WaitForSeconds(5.0f);
+                        yield return new WaitForSeconds(15.0f);
                     }
                 }
                 // if (material.materialName == "CarDoors")
